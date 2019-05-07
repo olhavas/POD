@@ -11,6 +11,16 @@ opencv2/core/core.hpp
 -
 opencv2/highgui/highgui.hpp
 -
+opencv2/opencv.hpp
+/home/olga/Studia/CPS/POD/Project/opencv2/opencv.hpp
 iostream
+-
+exception
+-
+math.h
+-
+vector
+-
+algorithm
 -
 
