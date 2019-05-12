@@ -273,6 +273,7 @@ int main( int argc, char** argv )
         cerr<<msg<<'\n';
         return -1;
     }
+    Histogram histog (image);
     image.copyTo(out);
     namedWindow( wind_name, WINDOW_NORMAL);// Create a window for display.
 
@@ -321,8 +322,10 @@ int main( int argc, char** argv )
     amean(image,out, 3);
     //medfilter(image, out, 3);
     cout<< MSE(image,out)<<'\n';
+    histog.show();
     //highpfilter(image,out, *mask) ;
     //opRobertsaII(image,out);
+
     namedWindow( wind_name.append("xD"), WINDOW_NORMAL);// Create a window for display.
 
     imshow( wind_name, out );
