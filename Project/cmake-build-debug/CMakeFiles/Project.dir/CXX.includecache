@@ -6,21 +6,25 @@
 
 #IncludeRegexTransform: 
 
-/home/olga/Studia/CPS/POD/Project/main.cpp
+/home/olga/Studia/CPS/POD/Project/Histogram.h
 opencv2/core/core.hpp
 -
 opencv2/highgui/highgui.hpp
 -
 opencv2/opencv.hpp
 /home/olga/Studia/CPS/POD/Project/opencv2/opencv.hpp
+vector
+-
+
+/home/olga/Studia/CPS/POD/Project/main.cpp
 iostream
 -
 exception
 -
 math.h
 -
-vector
--
 algorithm
 -
+Histogram.h
+/home/olga/Studia/CPS/POD/Project/Histogram.h
 

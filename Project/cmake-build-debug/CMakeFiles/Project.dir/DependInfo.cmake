@@ -4,6 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
+  "/home/olga/Studia/CPS/POD/Project/Histogram.cpp" "/home/olga/Studia/CPS/POD/Project/cmake-build-debug/CMakeFiles/Project.dir/Histogram.cpp.o"
   "/home/olga/Studia/CPS/POD/Project/main.cpp" "/home/olga/Studia/CPS/POD/Project/cmake-build-debug/CMakeFiles/Project.dir/main.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")

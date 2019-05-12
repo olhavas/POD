@@ -86,6 +86,12 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="/home/olga/Studia/CPS/POD/Project/Histogram.cpp">
+			<Option target="Project"/>
+		</Unit>
+		<Unit filename="/home/olga/Studia/CPS/POD/Project/Histogram.h">
+			<Option target="Project"/>
+		</Unit>
 		<Unit filename="/home/olga/Studia/CPS/POD/Project/main.cpp">
 			<Option target="Project"/>
 		</Unit>

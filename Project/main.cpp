@@ -1,11 +1,8 @@
-#include <opencv2/core/core.hpp>
-#include <opencv2/highgui/highgui.hpp>
-#include "opencv2/opencv.hpp"
 #include <iostream>
 #include <exception>
 #include <math.h>
-#include <vector>
 #include <algorithm>
+#include "Histogram.h"
 
 using namespace cv;
 using namespace std;
@@ -33,6 +30,39 @@ std::ostream& operator<<(std::ostream& os, Options c)
         default    : os.setstate(std::ios_base::failbit);
     }
     return os;
+}
+
+inline double MSE(const Mat & in, const Mat & out)
+{
+    if(in.cols != out.cols || in.rows != out.rows)
+    {
+        cout<<"Images have different size and it means that images are different\n";
+        return -1;
+    }
+    double error[in.channels()], val = 0;
+    const char * rgb = "BGR";
+    for(int i =0; i <in.channels(); i++)
+    {
+        error[i] = 0;
+    }
+    for(int c =0; c<in.channels(); c++)
+    {
+        for(int i = 0; i < in.rows; i++)
+        {
+            for(int j =0; j<in.cols; j++)
+            {
+                error[c]+=pow(in.at<Vec3b>(i,j)[c] - out.at<Vec3b>(i,j)[c],2);
+            }
+        }
+        error[c] /= (in.rows*in.cols);
+    }
+    for(int i = in.channels()-1; i >=0;i--)
+    {
+        cout<<"MSE ["<<rgb[i]<< "] = "<< error[i]<<'\n';
+        val += error[i];
+    }
+    val/=in.channels();
+    return val;
 }
 
 inline void readImg(const string & f, Mat & img)
@@ -187,6 +217,40 @@ void highpfilter(const Mat &input, Mat &output, const vector<int> & mask)
     }
 
 }
+void opRobertsaII(const Mat &input, Mat &output)
+{
+    //int result= 0;
+    for(int i = 0; i < input.rows; i++)
+    {
+        for(int j =0; j<input.cols; j++)
+        {
+            for(int c =0; c<input.channels(); c++)
+            {
+                if(i == input.rows -1 && j == input.cols - 1)
+                {
+                    output.at<Vec3b>(i,j)[c]=truncate(abs(input.at<Vec3b>(i,j)[c] - input.at<Vec3b>(i-1,j-1)[c])
+                                                      +abs(input.at<Vec3b>(i,j-1)[c] - input.at<Vec3b>(i-1,j)[c]));
+                }
+                else if(i == input.rows-1)
+                {
+                    output.at<Vec3b>(i,j)[c]=truncate(abs(input.at<Vec3b>(i,j)[c] - input.at<Vec3b>(i-1,j+1)[c])
+                                                      +abs(input.at<Vec3b>(i,j+1)[c] - input.at<Vec3b>(i-1,j)[c]));
+                }
+                else if (j == input.cols - 1)
+                {
+                    output.at<Vec3b>(i,j)[c]=truncate(abs(input.at<Vec3b>(i,j)[c] - input.at<Vec3b>(i+1,j-1)[c])
+                                                      +abs(input.at<Vec3b>(i,j-1)[c] - input.at<Vec3b>(i-1,j)[c]));
+                }
+                else
+                {
+                    output.at<Vec3b>(i,j)[c]=truncate(abs(input.at<Vec3b>(i,j)[c] - input.at<Vec3b>(i+1,j+1)[c])
+                                                      +abs(input.at<Vec3b>(i,j+1)[c] - input.at<Vec3b>(i+1,j)[c]));
+                }
+            }
+
+        }
+    }
+}
 
 
 
@@ -254,11 +318,12 @@ int main( int argc, char** argv )
     //bright(image,out,50);
     //contr(image,out,50);
     //neg(image,out);
-    //amean(image,out, 3);
-    //medfilter(image, out, 7);
-    highpfilter(image,out, *mask) ;
+    amean(image,out, 3);
+    //medfilter(image, out, 3);
+    cout<< MSE(image,out)<<'\n';
+    //highpfilter(image,out, *mask) ;
+    //opRobertsaII(image,out);
     namedWindow( wind_name.append("xD"), WINDOW_NORMAL);// Create a window for display.
-
 
     imshow( wind_name, out );
 
