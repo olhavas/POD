@@ -1,23 +1,32 @@
 #include <iostream>
 #include <exception>
-#include <math.h>
-#include <algorithm>
+
 #include "Histogram.h"
+
+#include <filesystem>
+#define PRPATH fs::current_path().parent_path()
+namespace fs = std::filesystem;
 
 using namespace cv;
 using namespace std;
 
 enum Options
 {
+    changeImg = 0,
     brightness = 1,
     contrast = 2,
     negative = 3,
     arithmeticMeanFilter = 4,
     medianFilter =5,
-    hightpassfilter = 6
-
+    hightpassfilter = 6,
+    histogram =7,
+    operatorRobertsaII = 8
 
 };
+
+string option [] = {"changeImg","brightness", "contrast", "negative", "arithmeticMeanFilter",
+                    "medianFilter", "hightpassfilter", "histogram", "operatorRobertsaII"};
+
 //enumeration types (both scoped and unscoped) can have overloaded operators
 std::ostream& operator<<(std::ostream& os, Options c)
 {
@@ -257,14 +266,16 @@ void opRobertsaII(const Mat &input, Mat &output)
 int main( int argc, char** argv )
 {
     bool endless = true;
-    string wind_name = "Lenna";
-    Options en;
-    const string file_name = "//home//olga//Studia//CPS/POD//Project//lena500.jpg";
+    int temporary = 0, temporary1 = 0;
+    string wind_name = "Lenna", img_name = "lena500.jpg";;
+    int en;
+    string file_name = PRPATH + "/"+ img_name;//"//home//olga//Studia//CPS/POD//Project//lenac_uniform2.bmp";
     Mat image, out;
     vector<int> *mask = new vector<int>();
     mask->reserve(9);
     try
     {
+
         readImg(file_name, image);
         //resize(image, image,Size(500,500));
     }
@@ -273,14 +284,18 @@ int main( int argc, char** argv )
         cerr<<msg<<'\n';
         return -1;
     }
-    Histogram histog (image);
-    image.copyTo(out);
-    namedWindow( wind_name, WINDOW_NORMAL);// Create a window for display.
 
-    imshow( wind_name, image );
-    for(int i = brightness; i<= negative; i++)
+    if(fs::exists(PRPATH / "Processed"))
     {
-        cout<<i<<". "<< Options (i)<<"\n";
+        fs::remove_all(PRPATH / "Processed");
+    }
+    fs::create_directory(static_cast<string>(PRPATH)+"/Processed");
+
+    image.copyTo(out);
+
+    for(int i = changeImg; i<= operatorRobertsaII; i++)
+    {
+        cout<<i<<". "<< option[i]<<"\n";
     }
     mask->push_back(0);
     mask->push_back(-1);
@@ -291,25 +306,173 @@ int main( int argc, char** argv )
     mask->push_back(0);
     mask->push_back(-1);
     mask->push_back(0);
-//    while (endless)
-//    {
-//        cin >> reinterpret_cast<int &>(en);
-//        switch (en)
-//        {
-//            case brightness:
-//                //
+
+    while (endless)
+    {
+        cout<<"Choose an option: ";
+        cin >> en;
+        switch (en)
+        {
+            case changeImg:
+                try
+                {
+                    getline(cin, img_name);
+                    file_name = PRPATH + "/"+ img_name;
+                    readImg(file_name, image);
+                }
+                catch (const char* msg)
+                {
+                    cerr<<msg<<'\n';
+                }
+                image.copyTo(out);
+                break;
+            case brightness:
+                namedWindow( wind_name, WINDOW_NORMAL);// Create a window for display.
+                imshow( wind_name, image );
+                cout<<"Set brightness: ";
+                cin>>temporary;
+                bright(image,out,temporary);
+                imwrite(static_cast<string>((PRPATH)/"Processed/") + option[en]+'('+ to_string(temporary) +")_"+ fs::path(file_name).filename(),out);
+                namedWindow( static_cast<string>(wind_name+'_'+ option[en]), WINDOW_NORMAL);// Create a window for display.
+                imshow( static_cast<string>(wind_name+'_'+ option[en]), out );
+                waitKey(0);             // Wait for a keystroke in the window
+                image.copyTo(out);
+                break;
+            case contrast:
+                namedWindow( wind_name, WINDOW_NORMAL);// Create a window for display.
+                imshow( wind_name, image );
+                cout<<"Set contrast: ";
+                cin>>temporary;
+                contr(image,out,temporary);
+                imwrite(static_cast<string>((PRPATH)/"Processed/") + option[en]+'('+ to_string(temporary) +")_"+ fs::path(file_name).filename(),out);
+                namedWindow( static_cast<string>(wind_name +'_'+ option[en]), WINDOW_NORMAL);// Create a window for display.
+                imshow( static_cast<string>(wind_name+'_'+ option[en]), out );
+                waitKey(0);             // Wait for a keystroke in the window
+                image.copyTo(out);
+                break;
+            case negative:
+                namedWindow( wind_name, WINDOW_NORMAL);// Create a window for display.
+                imshow( wind_name, image );
+                neg(image,out);
+                imwrite(static_cast<string>((PRPATH)/"Processed/") + option[en]+'_'+ fs::path(file_name).filename(),out);
+                namedWindow( static_cast<string>(wind_name +'_'+ option[en]), WINDOW_NORMAL);// Create a window for display.
+                imshow( static_cast<string>(wind_name +'_'+ option[en]), out );
+                waitKey(0);             // Wait for a keystroke in the window
+                image.copyTo(out);
+                break;
+            case arithmeticMeanFilter:
+                namedWindow( wind_name, WINDOW_NORMAL);// Create a window for display.
+                imshow( wind_name, image );
+                cout<<"Set mask size (NxN): ";
+                cin>>temporary;
+                amean(image,out,temporary);
+                imwrite(static_cast<string>((PRPATH)/"Processed/") + option[en]+"mask("+ to_string(temporary) +'x'+ to_string(temporary)
+                                                                    +")_"+ fs::path(file_name).filename(),out);
+                namedWindow( static_cast<string>(wind_name +'_'+ option[en]), WINDOW_NORMAL);// Create a window for display.
+                imshow( static_cast<string>(wind_name +'_'+ option[en]), out );
+                waitKey(0);             // Wait for a keystroke in the window
+                image.copyTo(out);
+                break;
+            case medianFilter:
+                namedWindow( wind_name, WINDOW_NORMAL);// Create a window for display.
+                imshow( wind_name, image );
+                cout<<"Set mask size (NxN): ";
+                cin>>temporary;
+                medfilter(image,out,temporary);
+                imwrite(static_cast<string>((PRPATH)/"Processed/") + option[en]+"mask("+ to_string(temporary) +'x'+ to_string(temporary)
+                        +")_"+ fs::path(file_name).filename(),out);
+                namedWindow( static_cast<string>(wind_name +'_'+ option[en]), WINDOW_NORMAL);// Create a window for display.
+                imshow( static_cast<string>(wind_name +'_'+ option[en]), out );
+                waitKey(0);             // Wait for a keystroke in the window
+                image.copyTo(out);
+                break;
+            case hightpassfilter:
+                namedWindow( wind_name, WINDOW_NORMAL);// Create a window for display.
+                imshow( wind_name, image );
+                cout<<"0 -1  0\n-1 5 -1\n0 -1  0\n";
+                cout<<"Use default mask ? <yes = 1 >";
+                cin>> temporary;
+                if(temporary!=1)
+                {
+                    mask->clear();
+                    mask->reserve(9);
+                    cout<<"Set hightpass mask (3x3): ";
+                    for(int i = 0; i < 9; i++)
+                    {
+                        cin>>temporary;
+                        mask->push_back(temporary);
+                    }
+                }
+                highpfilter(image,out, *mask) ;
+                imwrite(static_cast<string>((PRPATH)/"Processed/") + option[en]+'_'+ fs::path(file_name).filename(),out);
+                namedWindow( static_cast<string>(wind_name +'_'+ option[en]), WINDOW_NORMAL);// Create a window for display.
+                imshow( static_cast<string>(wind_name +'_'+ option[en]), out );
+                waitKey(0);             // Wait for a keystroke in the window
+                image.copyTo(out);
+                break;
+            case histogram: {
+                namedWindow(wind_name, WINDOW_NORMAL);// Create a window for display.
+                imshow(wind_name, image);
+                Histogram histog (image);
+                cout << "Set min max <0...255>: ";
+                cin >> temporary >> temporary1;
+                histog.show();
+                histog.equalization(out, temporary, temporary1);
+                Histogram hout(out);
+                hout.show();
+                imwrite(static_cast<string>((PRPATH) / "Processed/") + option[en] + '_' +
+                        fs::path(file_name).filename(), out);
+                namedWindow(static_cast<string>(wind_name + '_' + option[en]),
+                            WINDOW_NORMAL);// Create a window for display.
+                imshow(static_cast<string>(wind_name + '_' + option[en]), out);
+                waitKey(0);             // Wait for a keystroke in the window
+                image.copyTo(out);
+            }break;
+            case operatorRobertsaII:
+                namedWindow( wind_name, WINDOW_NORMAL);// Create a window for display.
+                imshow( wind_name, image );
+                opRobertsaII(image,out);
+                imwrite(static_cast<string>((PRPATH)/"Processed/") + option[en]+'_'+ fs::path(file_name).filename(),out);
+                namedWindow( static_cast<string>(wind_name +'_'+ option[en]), WINDOW_NORMAL);// Create a window for display.
+                imshow( static_cast<string>(wind_name +'_'+ option[en]), out );
+                waitKey(0);             // Wait for a keystroke in the window
+                image.copyTo(out);
+                break;
+//            case histogram:
+//                namedWindow( wind_name, WINDOW_NORMAL);// Create a window for display.
+//                imshow( wind_name, image );
+//                Histogram histog (image);
+//                histog.showTable();
+//                histog.show();
+//                cout<<"Set min, max ";
+//                cin>>temporary>>temporary1;
+//                histog.equalization(out, temporary,temporary1);
+//                Histogram hout (out);
+//                hout.show();
+//                imwrite(static_cast<string>((PRPATH)/"Processed/") + option[en]+'_'+ fs::path(file_name).filename(),out);
+//                namedWindow( static_cast<string>(wind_name +'_'+ option[en]), WINDOW_NORMAL);// Create a window for display.
+//                imshow( static_cast<string>(wind_name +'_'+ option[en]), out );
+//                waitKey(0);             // Wait for a keystroke in the window
+//                image.copyTo(out);
 //                break;
-//            case contrast:
-//                //
+//            case operatorRobertsaII:
+//                namedWindow( wind_name, WINDOW_NORMAL);// Create a window for display.
+//                imshow( wind_name, image );
+//                opRobertsaII(image,out);
+//                imwrite(static_cast<string>((PRPATH)/"Processed/") + option[en]+'_'+ fs::path(file_name).filename(),out);
+//                namedWindow( static_cast<string>(wind_name +'_'+ option[en]), WINDOW_NORMAL);// Create a window for display.
+//                imshow( static_cast<string>(wind_name +'_'+ option[en]), out );
+//                waitKey(0);             // Wait for a keystroke in the window
+//                image.copyTo(out);
 //                break;
-//            case negative:
-//                //
-//                break;
-//            default:
-//                endless = ! endless;
-//                break;
-//        }
-//    }
+            default:
+                endless = ! endless;
+                waitKey(0);             // Wait for a keystroke in the window
+                delete mask;
+                return 0;
+
+        }
+    }
 
 
 
@@ -319,19 +482,23 @@ int main( int argc, char** argv )
     //bright(image,out,50);
     //contr(image,out,50);
     //neg(image,out);
-    amean(image,out, 3);
+    //amean(image,out, 3);
     //medfilter(image, out, 3);
-    cout<< MSE(image,out)<<'\n';
-    histog.show();
+
+    //cout<< MSE(image,out)<<'\n';
+//    histog.showTable();
+//    histog.show();
+//    histog.equalization(out, 0,150);
+//    Histogram hout (out);
+//    hout.show();
+
     //highpfilter(image,out, *mask) ;
     //opRobertsaII(image,out);
+//
+//    namedWindow( wind_name+"xD", WINDOW_NORMAL);// Create a window for display.
+//
+//    imshow( wind_name+"xD", out );
 
-    namedWindow( wind_name.append("xD"), WINDOW_NORMAL);// Create a window for display.
 
-    imshow( wind_name, out );
-
-
-    waitKey(0);             // Wait for a keystroke in the window
-    delete mask;
     return 0;
 }
