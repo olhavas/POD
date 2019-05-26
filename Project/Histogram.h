@@ -15,10 +15,6 @@
 class Histogram {
 private:
     static uint cou;
-public:
-    static uint getCou();
-
-private:
     uint pixels = 0;
     uint channels = 0;
     int hist_w = 640;
@@ -36,7 +32,10 @@ public:
     void equalization(cv::Mat &out, uint gmin,uint gmax);
     uint getPixels() const;
     uint getChannels() const;
+    static uint getCounter();
     virtual ~Histogram();
+    void saveHistogramImage(std::string name);
+    double calculateScale();
 
 
 };

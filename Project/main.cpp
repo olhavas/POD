@@ -297,6 +297,7 @@ int main( int argc, char** argv )
     {
         cout<<i<<". "<< option[i]<<"\n";
     }
+    cout<<"Finish program enter any number except number of options!\n";
     mask->push_back(0);
     mask->push_back(-1);
     mask->push_back(0);
@@ -414,14 +415,25 @@ int main( int argc, char** argv )
                 namedWindow(wind_name, WINDOW_NORMAL);// Create a window for display.
                 imshow(wind_name, image);
                 Histogram histog (image);
-                cout << "Set min max <0...255>: ";
-                cin >> temporary >> temporary1;
                 histog.show();
-                histog.equalization(out, temporary, temporary1);
+                cout<<"Histogram equalization < yes = 1>: ";
+                cin>> temporary;
+                if(temporary == 1)
+                {
+                    cout << "Set min max <0...255>: ";
+                    cin >> temporary >> temporary1;
+                    histog.equalization(out, temporary, temporary1);
+                    temporary = 0;
+                }
                 Histogram hout(out);
                 hout.show();
                 imwrite(static_cast<string>((PRPATH) / "Processed/") + option[en] + '_' +
                         fs::path(file_name).filename(), out);
+                ////////dla sprawka po zaliczeniu usunąć
+                histog.saveHistogramImage(static_cast<string>((PRPATH) / "Processed/")+"histogram_of_" + fs::path(file_name).filename());
+                hout.saveHistogramImage(static_cast<string>((PRPATH) / "Processed/")+"histogram_of_" + option[en] + '_' +
+                                          fs::path(file_name).filename());
+                ///////
                 namedWindow(static_cast<string>(wind_name + '_' + option[en]),
                             WINDOW_NORMAL);// Create a window for display.
                 imshow(static_cast<string>(wind_name + '_' + option[en]), out);
@@ -438,33 +450,6 @@ int main( int argc, char** argv )
                 waitKey(0);             // Wait for a keystroke in the window
                 image.copyTo(out);
                 break;
-//            case histogram:
-//                namedWindow( wind_name, WINDOW_NORMAL);// Create a window for display.
-//                imshow( wind_name, image );
-//                Histogram histog (image);
-//                histog.showTable();
-//                histog.show();
-//                cout<<"Set min, max ";
-//                cin>>temporary>>temporary1;
-//                histog.equalization(out, temporary,temporary1);
-//                Histogram hout (out);
-//                hout.show();
-//                imwrite(static_cast<string>((PRPATH)/"Processed/") + option[en]+'_'+ fs::path(file_name).filename(),out);
-//                namedWindow( static_cast<string>(wind_name +'_'+ option[en]), WINDOW_NORMAL);// Create a window for display.
-//                imshow( static_cast<string>(wind_name +'_'+ option[en]), out );
-//                waitKey(0);             // Wait for a keystroke in the window
-//                image.copyTo(out);
-//                break;
-//            case operatorRobertsaII:
-//                namedWindow( wind_name, WINDOW_NORMAL);// Create a window for display.
-//                imshow( wind_name, image );
-//                opRobertsaII(image,out);
-//                imwrite(static_cast<string>((PRPATH)/"Processed/") + option[en]+'_'+ fs::path(file_name).filename(),out);
-//                namedWindow( static_cast<string>(wind_name +'_'+ option[en]), WINDOW_NORMAL);// Create a window for display.
-//                imshow( static_cast<string>(wind_name +'_'+ option[en]), out );
-//                waitKey(0);             // Wait for a keystroke in the window
-//                image.copyTo(out);
-//                break;
             default:
                 endless = ! endless;
                 waitKey(0);             // Wait for a keystroke in the window

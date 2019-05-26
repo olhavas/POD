@@ -79,7 +79,7 @@ void Histogram::show() {
     const int margin = 3;
     const int min_y = margin;
     const int max_y = hist_h - margin;
-    const double scale = 0.05;
+    const double scale = calculateScale();
     cv::Scalar colours[] =
             {
                     {255, 0, 0},    // blue
@@ -127,7 +127,7 @@ void Histogram::equalization(cv::Mat &out, uint gmin,uint gmax) {
     {
         l = 0;
         while (temp[i][l] == 0) l++;
-        dmin = temp[i][l];
+        //dmin = temp[i][l];
 
         for(int j = 0; j<256;j++)
         {
@@ -157,7 +157,21 @@ void Histogram::equalization(cv::Mat &out, uint gmin,uint gmax) {
 
 }
 
-uint Histogram::getCou() {
+uint Histogram::getCounter() {
     return cou;
+}
+
+void Histogram::saveHistogramImage(std::string name) {
+    cv::imwrite(name, *histogram);
+}
+
+double Histogram::calculateScale() {
+    uint counter = 0, pix = this->pixels;
+    while(pix>= 10)
+    {
+        pix = (pix - pix%10)/10;
+        counter++;
+    }
+    return static_cast<double >(5/pow(10, static_cast<int>(sqrt(counter))));
 }
 
