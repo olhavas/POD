@@ -5,6 +5,7 @@
 
 #include <filesystem>
 #define PRPATH fs::current_path().parent_path()
+#define POS en-1
 namespace fs = std::filesystem;
 
 using namespace cv;
@@ -12,34 +13,21 @@ using namespace std;
 
 enum Options
 {
-    changeImg = 0,
-    brightness = 1,
-    contrast = 2,
-    negative = 3,
-    arithmeticMeanFilter = 4,
-    medianFilter =5,
-    hightpassfilter = 6,
-    histogram =7,
-    operatorRobertsaII = 8
+    changeImg = 1,
+    brightness,
+    contrast,
+    negative ,
+    arithmeticMeanFilter,
+    medianFilter,
+    hightpassfilter,
+    histogram,
+    operatorRobertsaII
 
 };
 
 string option [] = {"changeImg","brightness", "contrast", "negative", "arithmeticMeanFilter",
                     "medianFilter", "hightpassfilter", "histogram", "operatorRobertsaII"};
 
-//enumeration types (both scoped and unscoped) can have overloaded operators
-std::ostream& operator<<(std::ostream& os, Options c)
-{
-    switch(c)
-    {
-        case brightness   : os << "brightness";    break;
-        case contrast: os << "contrast"; break;
-        case negative : os << "negative";  break;
-
-        default    : os.setstate(std::ios_base::failbit);
-    }
-    return os;
-}
 
 inline double MSE(const Mat & in, const Mat & out)
 {
@@ -99,9 +87,8 @@ void bright(const Mat &input, Mat &output, int val)
         for(int j =0; j<input.cols; j++)
         {
             for(int c =0; c<input.channels(); c++)
-            output.at<Vec3b>(i,j)[c] =truncate(input.at<Vec3b>(i,j)[c] + val); //r
-//            output.at<Vec3b>(i,j)[1] =truncate(input.at<Vec3b>(i,j)[1] + val); //g
-//            output.at<Vec3b>(i,j)[0] =truncate(input.at<Vec3b>(i,j)[0] + val); //b
+            output.at<Vec3b>(i,j)[c] =truncate(input.at<Vec3b>(i,j)[c] + val);
+
         }
     }
 }
@@ -167,7 +154,6 @@ void medfilter(const Mat &input, Mat &output, int val)
             {
                 colors.push_back(input.at<Vec3b>(i, j)[c]);
 
-                //output.at<Vec3b>(i, j)[c] = input.at<Vec3b>(i, j)[c];
                 for (int m = margin; m >=1 ; m--)
                 {
                     colors.push_back(input.at<Vec3b>(i-m,j-m)[c]);
@@ -295,7 +281,7 @@ int main( int argc, char** argv )
 
     for(int i = changeImg; i<= operatorRobertsaII; i++)
     {
-        cout<<i<<". "<< option[i]<<"\n";
+        cout<<i<<". "<< option[i-1]<<"\n";
     }
     cout<<"Finish program enter any number except number of options!\n";
     mask->push_back(0);
@@ -315,9 +301,10 @@ int main( int argc, char** argv )
         switch (en)
         {
             case changeImg:
+            {
                 try
                 {
-                    getline(cin, img_name);
+                    cin>>img_name;
                     file_name = PRPATH + "/"+ img_name;
                     readImg(file_name, image);
                 }
@@ -326,16 +313,16 @@ int main( int argc, char** argv )
                     cerr<<msg<<'\n';
                 }
                 image.copyTo(out);
-                break;
+            } break;
             case brightness:
                 namedWindow( wind_name, WINDOW_NORMAL);// Create a window for display.
                 imshow( wind_name, image );
                 cout<<"Set brightness: ";
                 cin>>temporary;
                 bright(image,out,temporary);
-                imwrite(static_cast<string>((PRPATH)/"Processed/") + option[en]+'('+ to_string(temporary) +")_"+ fs::path(file_name).filename(),out);
-                namedWindow( static_cast<string>(wind_name+'_'+ option[en]), WINDOW_NORMAL);// Create a window for display.
-                imshow( static_cast<string>(wind_name+'_'+ option[en]), out );
+                imwrite(static_cast<string>((PRPATH)/"Processed/") + option[POS]+'('+ to_string(temporary) +")_"+ fs::path(file_name).filename(),out);
+                namedWindow( static_cast<string>(wind_name+'_'+ option[POS]), WINDOW_NORMAL);// Create a window for display.
+                imshow( static_cast<string>(wind_name+'_'+ option[POS]), out );
                 waitKey(0);             // Wait for a keystroke in the window
                 image.copyTo(out);
                 break;
@@ -345,9 +332,9 @@ int main( int argc, char** argv )
                 cout<<"Set contrast: ";
                 cin>>temporary;
                 contr(image,out,temporary);
-                imwrite(static_cast<string>((PRPATH)/"Processed/") + option[en]+'('+ to_string(temporary) +")_"+ fs::path(file_name).filename(),out);
-                namedWindow( static_cast<string>(wind_name +'_'+ option[en]), WINDOW_NORMAL);// Create a window for display.
-                imshow( static_cast<string>(wind_name+'_'+ option[en]), out );
+                imwrite(static_cast<string>((PRPATH)/"Processed/") + option[POS]+'('+ to_string(temporary) +")_"+ fs::path(file_name).filename(),out);
+                namedWindow( static_cast<string>(wind_name +'_'+ option[POS]), WINDOW_NORMAL);// Create a window for display.
+                imshow( static_cast<string>(wind_name+'_'+ option[POS]), out );
                 waitKey(0);             // Wait for a keystroke in the window
                 image.copyTo(out);
                 break;
@@ -355,9 +342,9 @@ int main( int argc, char** argv )
                 namedWindow( wind_name, WINDOW_NORMAL);// Create a window for display.
                 imshow( wind_name, image );
                 neg(image,out);
-                imwrite(static_cast<string>((PRPATH)/"Processed/") + option[en]+'_'+ fs::path(file_name).filename(),out);
-                namedWindow( static_cast<string>(wind_name +'_'+ option[en]), WINDOW_NORMAL);// Create a window for display.
-                imshow( static_cast<string>(wind_name +'_'+ option[en]), out );
+                imwrite(static_cast<string>((PRPATH)/"Processed/") + option[POS]+'_'+ fs::path(file_name).filename(),out);
+                namedWindow( static_cast<string>(wind_name +'_'+ option[POS]), WINDOW_NORMAL);// Create a window for display.
+                imshow( static_cast<string>(wind_name +'_'+ option[POS]), out );
                 waitKey(0);             // Wait for a keystroke in the window
                 image.copyTo(out);
                 break;
@@ -367,10 +354,10 @@ int main( int argc, char** argv )
                 cout<<"Set mask size (NxN): ";
                 cin>>temporary;
                 amean(image,out,temporary);
-                imwrite(static_cast<string>((PRPATH)/"Processed/") + option[en]+"mask("+ to_string(temporary) +'x'+ to_string(temporary)
+                imwrite(static_cast<string>((PRPATH)/"Processed/") + option[POS]+"mask("+ to_string(temporary) +'x'+ to_string(temporary)
                                                                     +")_"+ fs::path(file_name).filename(),out);
-                namedWindow( static_cast<string>(wind_name +'_'+ option[en]), WINDOW_NORMAL);// Create a window for display.
-                imshow( static_cast<string>(wind_name +'_'+ option[en]), out );
+                namedWindow( static_cast<string>(wind_name +'_'+ option[POS]), WINDOW_NORMAL);// Create a window for display.
+                imshow( static_cast<string>(wind_name +'_'+ option[POS]), out );
                 waitKey(0);             // Wait for a keystroke in the window
                 image.copyTo(out);
                 break;
@@ -380,10 +367,10 @@ int main( int argc, char** argv )
                 cout<<"Set mask size (NxN): ";
                 cin>>temporary;
                 medfilter(image,out,temporary);
-                imwrite(static_cast<string>((PRPATH)/"Processed/") + option[en]+"mask("+ to_string(temporary) +'x'+ to_string(temporary)
+                imwrite(static_cast<string>((PRPATH)/"Processed/") + option[POS]+"mask("+ to_string(temporary) +'x'+ to_string(temporary)
                         +")_"+ fs::path(file_name).filename(),out);
-                namedWindow( static_cast<string>(wind_name +'_'+ option[en]), WINDOW_NORMAL);// Create a window for display.
-                imshow( static_cast<string>(wind_name +'_'+ option[en]), out );
+                namedWindow( static_cast<string>(wind_name +'_'+ option[POS]), WINDOW_NORMAL);// Create a window for display.
+                imshow( static_cast<string>(wind_name +'_'+ option[POS]), out );
                 waitKey(0);             // Wait for a keystroke in the window
                 image.copyTo(out);
                 break;
@@ -405,9 +392,9 @@ int main( int argc, char** argv )
                     }
                 }
                 highpfilter(image,out, *mask) ;
-                imwrite(static_cast<string>((PRPATH)/"Processed/") + option[en]+'_'+ fs::path(file_name).filename(),out);
-                namedWindow( static_cast<string>(wind_name +'_'+ option[en]), WINDOW_NORMAL);// Create a window for display.
-                imshow( static_cast<string>(wind_name +'_'+ option[en]), out );
+                imwrite(static_cast<string>((PRPATH)/"Processed/") + option[POS]+'_'+ fs::path(file_name).filename(),out);
+                namedWindow( static_cast<string>(wind_name +'_'+ option[POS]), WINDOW_NORMAL);// Create a window for display.
+                imshow( static_cast<string>(wind_name +'_'+ option[POS]), out );
                 waitKey(0);             // Wait for a keystroke in the window
                 image.copyTo(out);
                 break;
@@ -427,16 +414,16 @@ int main( int argc, char** argv )
                 }
                 Histogram hout(out);
                 hout.show();
-                imwrite(static_cast<string>((PRPATH) / "Processed/") + option[en] + '_' +
+                imwrite(static_cast<string>((PRPATH) / "Processed/") + option[POS] + '_' +
                         fs::path(file_name).filename(), out);
                 ////////dla sprawka po zaliczeniu usunąć
                 histog.saveHistogramImage(static_cast<string>((PRPATH) / "Processed/")+"histogram_of_" + fs::path(file_name).filename());
-                hout.saveHistogramImage(static_cast<string>((PRPATH) / "Processed/")+"histogram_of_" + option[en] + '_' +
+                hout.saveHistogramImage(static_cast<string>((PRPATH) / "Processed/")+"histogram_of_" + option[POS] + '_' +
                                           fs::path(file_name).filename());
                 ///////
-                namedWindow(static_cast<string>(wind_name + '_' + option[en]),
+                namedWindow(static_cast<string>(wind_name + '_' + option[POS]),
                             WINDOW_NORMAL);// Create a window for display.
-                imshow(static_cast<string>(wind_name + '_' + option[en]), out);
+                imshow(static_cast<string>(wind_name + '_' + option[POS]), out);
                 waitKey(0);             // Wait for a keystroke in the window
                 image.copyTo(out);
             }break;
@@ -444,9 +431,9 @@ int main( int argc, char** argv )
                 namedWindow( wind_name, WINDOW_NORMAL);// Create a window for display.
                 imshow( wind_name, image );
                 opRobertsaII(image,out);
-                imwrite(static_cast<string>((PRPATH)/"Processed/") + option[en]+'_'+ fs::path(file_name).filename(),out);
-                namedWindow( static_cast<string>(wind_name +'_'+ option[en]), WINDOW_NORMAL);// Create a window for display.
-                imshow( static_cast<string>(wind_name +'_'+ option[en]), out );
+                imwrite(static_cast<string>((PRPATH)/"Processed/") + option[POS]+'_'+ fs::path(file_name).filename(),out);
+                namedWindow( static_cast<string>(wind_name +'_'+ option[POS]), WINDOW_NORMAL);// Create a window for display.
+                imshow( static_cast<string>(wind_name +'_'+ option[POS]), out );
                 waitKey(0);             // Wait for a keystroke in the window
                 image.copyTo(out);
                 break;
