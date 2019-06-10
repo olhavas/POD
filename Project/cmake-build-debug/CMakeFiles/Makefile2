@@ -50,19 +50,19 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
-CMAKE_COMMAND = /snap/clion/70/bin/cmake/linux/bin/cmake
+CMAKE_COMMAND = /snap/clion/73/bin/cmake/linux/bin/cmake
 
 # The command to remove a file.
-RM = /snap/clion/70/bin/cmake/linux/bin/cmake -E remove -f
+RM = /snap/clion/73/bin/cmake/linux/bin/cmake -E remove -f
 
 # Escaping for special characters.
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/olga/Studia/CPS/POD/Project
+CMAKE_SOURCE_DIR = /home/olga/proj/POD/Project
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/olga/Studia/CPS/POD/Project/cmake-build-debug
+CMAKE_BINARY_DIR = /home/olga/proj/POD/Project/cmake-build-debug
 
 #=============================================================================
 # Target rules for target CMakeFiles/Project.dir
@@ -71,7 +71,7 @@ CMAKE_BINARY_DIR = /home/olga/Studia/CPS/POD/Project/cmake-build-debug
 CMakeFiles/Project.dir/all:
 	$(MAKE) -f CMakeFiles/Project.dir/build.make CMakeFiles/Project.dir/depend
 	$(MAKE) -f CMakeFiles/Project.dir/build.make CMakeFiles/Project.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/olga/Studia/CPS/POD/Project/cmake-build-debug/CMakeFiles --progress-num=1,2,3 "Built target Project"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/olga/proj/POD/Project/cmake-build-debug/CMakeFiles --progress-num=1,2,3 "Built target Project"
 .PHONY : CMakeFiles/Project.dir/all
 
 # Include target in all.
@@ -81,9 +81,9 @@ all: CMakeFiles/Project.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/Project.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/olga/Studia/CPS/POD/Project/cmake-build-debug/CMakeFiles 3
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/olga/proj/POD/Project/cmake-build-debug/CMakeFiles 3
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/Project.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/olga/Studia/CPS/POD/Project/cmake-build-debug/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/olga/proj/POD/Project/cmake-build-debug/CMakeFiles 0
 .PHONY : CMakeFiles/Project.dir/rule
 
 # Convenience name for target.

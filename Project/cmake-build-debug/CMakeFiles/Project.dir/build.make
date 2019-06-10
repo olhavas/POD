@@ -34,19 +34,19 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
-CMAKE_COMMAND = /snap/clion/70/bin/cmake/linux/bin/cmake
+CMAKE_COMMAND = /snap/clion/73/bin/cmake/linux/bin/cmake
 
 # The command to remove a file.
-RM = /snap/clion/70/bin/cmake/linux/bin/cmake -E remove -f
+RM = /snap/clion/73/bin/cmake/linux/bin/cmake -E remove -f
 
 # Escaping for special characters.
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/olga/Studia/CPS/POD/Project
+CMAKE_SOURCE_DIR = /home/olga/proj/POD/Project
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/olga/Studia/CPS/POD/Project/cmake-build-debug
+CMAKE_BINARY_DIR = /home/olga/proj/POD/Project/cmake-build-debug
 
 # Include any dependencies generated for this target.
 include CMakeFiles/Project.dir/depend.make
@@ -59,29 +59,29 @@ include CMakeFiles/Project.dir/flags.make
 
 CMakeFiles/Project.dir/main.cpp.o: CMakeFiles/Project.dir/flags.make
 CMakeFiles/Project.dir/main.cpp.o: ../main.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/olga/Studia/CPS/POD/Project/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/Project.dir/main.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Project.dir/main.cpp.o -c /home/olga/Studia/CPS/POD/Project/main.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/olga/proj/POD/Project/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/Project.dir/main.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Project.dir/main.cpp.o -c /home/olga/proj/POD/Project/main.cpp
 
 CMakeFiles/Project.dir/main.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Project.dir/main.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/olga/Studia/CPS/POD/Project/main.cpp > CMakeFiles/Project.dir/main.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/olga/proj/POD/Project/main.cpp > CMakeFiles/Project.dir/main.cpp.i
 
 CMakeFiles/Project.dir/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Project.dir/main.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/olga/Studia/CPS/POD/Project/main.cpp -o CMakeFiles/Project.dir/main.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/olga/proj/POD/Project/main.cpp -o CMakeFiles/Project.dir/main.cpp.s
 
 CMakeFiles/Project.dir/Histogram.cpp.o: CMakeFiles/Project.dir/flags.make
 CMakeFiles/Project.dir/Histogram.cpp.o: ../Histogram.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/olga/Studia/CPS/POD/Project/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/Project.dir/Histogram.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Project.dir/Histogram.cpp.o -c /home/olga/Studia/CPS/POD/Project/Histogram.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/olga/proj/POD/Project/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/Project.dir/Histogram.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Project.dir/Histogram.cpp.o -c /home/olga/proj/POD/Project/Histogram.cpp
 
 CMakeFiles/Project.dir/Histogram.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Project.dir/Histogram.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/olga/Studia/CPS/POD/Project/Histogram.cpp > CMakeFiles/Project.dir/Histogram.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/olga/proj/POD/Project/Histogram.cpp > CMakeFiles/Project.dir/Histogram.cpp.i
 
 CMakeFiles/Project.dir/Histogram.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Project.dir/Histogram.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/olga/Studia/CPS/POD/Project/Histogram.cpp -o CMakeFiles/Project.dir/Histogram.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/olga/proj/POD/Project/Histogram.cpp -o CMakeFiles/Project.dir/Histogram.cpp.s
 
 # Object files for target Project
 Project_OBJECTS = \
@@ -136,7 +136,7 @@ Project: /usr/lib/x86_64-linux-gnu/libopencv_imgcodecs.so.3.2.0
 Project: /usr/lib/x86_64-linux-gnu/libopencv_imgproc.so.3.2.0
 Project: /usr/lib/x86_64-linux-gnu/libopencv_core.so.3.2.0
 Project: CMakeFiles/Project.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/olga/Studia/CPS/POD/Project/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX executable Project"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/olga/proj/POD/Project/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX executable Project"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/Project.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -149,6 +149,6 @@ CMakeFiles/Project.dir/clean:
 .PHONY : CMakeFiles/Project.dir/clean
 
 CMakeFiles/Project.dir/depend:
-	cd /home/olga/Studia/CPS/POD/Project/cmake-build-debug && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/olga/Studia/CPS/POD/Project /home/olga/Studia/CPS/POD/Project /home/olga/Studia/CPS/POD/Project/cmake-build-debug /home/olga/Studia/CPS/POD/Project/cmake-build-debug /home/olga/Studia/CPS/POD/Project/cmake-build-debug/CMakeFiles/Project.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/olga/proj/POD/Project/cmake-build-debug && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/olga/proj/POD/Project /home/olga/proj/POD/Project /home/olga/proj/POD/Project/cmake-build-debug /home/olga/proj/POD/Project/cmake-build-debug /home/olga/proj/POD/Project/cmake-build-debug/CMakeFiles/Project.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/Project.dir/depend
 
