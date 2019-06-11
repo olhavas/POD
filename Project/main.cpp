@@ -3,10 +3,10 @@
 
 #include "Histogram.h"
 
-#include <filesystem>
-#define PRPATH fs::current_path().parent_path()
+#include <experimental/filesystem>
+#define PRPATH fs::current_path()//.parent_path()
 #define POS en-1
-namespace fs = std::filesystem;
+namespace fs = std::experimental::filesystem;
 
 using namespace cv;
 using namespace std;
@@ -48,10 +48,9 @@ inline double MSE(const Mat & in, const Mat & out)
         {
             for(int j =0; j<in.cols; j++)
             {
-                error[c]+=pow(in.at<Vec3b>(i,j)[c] - out.at<Vec3b>(i,j)[c],2);
+                error[c]+=pow(in.at<Vec3b>(i,j)[c] - out.at<Vec3b>(i,j)[c],2)/(in.rows*in.cols);
             }
         }
-        error[c] /= (in.rows*in.cols);
     }
     for(int i = in.channels()-1; i >=0;i--)
     {
@@ -65,6 +64,7 @@ inline double MSE(const Mat & in, const Mat & out)
 inline void readImg(const string & f, Mat & img)
 {
     img = imread(f, CV_LOAD_IMAGE_COLOR);   // Read the file
+    cout<<f<<'\n';
 
     if(! img.data )                              // Check for invalid input
     {
@@ -354,6 +354,7 @@ int main( int argc, char** argv )
                 cout<<"Set mask size (NxN): ";
                 cin>>temporary;
                 amean(image,out,temporary);
+                cout<< MSE(image,out)<<'\n';
                 imwrite(static_cast<string>((PRPATH)/"Processed/") + option[POS]+"mask("+ to_string(temporary) +'x'+ to_string(temporary)
                                                                     +")_"+ fs::path(file_name).filename(),out);
                 namedWindow( static_cast<string>(wind_name +'_'+ option[POS]), WINDOW_NORMAL);// Create a window for display.
@@ -367,6 +368,7 @@ int main( int argc, char** argv )
                 cout<<"Set mask size (NxN): ";
                 cin>>temporary;
                 medfilter(image,out,temporary);
+                cout<< MSE(image,out)<<'\n';
                 imwrite(static_cast<string>((PRPATH)/"Processed/") + option[POS]+"mask("+ to_string(temporary) +'x'+ to_string(temporary)
                         +")_"+ fs::path(file_name).filename(),out);
                 namedWindow( static_cast<string>(wind_name +'_'+ option[POS]), WINDOW_NORMAL);// Create a window for display.

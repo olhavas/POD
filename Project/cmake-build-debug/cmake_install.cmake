@@ -1,4 +1,4 @@
-# Install script for directory: /home/olga/Studia/CPS/POD/Project
+# Install script for directory: /home/olga/proj/POD/Project
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -45,5 +45,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/olga/Studia/CPS/POD/Project/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/olga/proj/POD/Project/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
