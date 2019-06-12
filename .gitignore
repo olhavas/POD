@@ -32,6 +32,6 @@
 *.app
 
 #Intellij
-.idea/
+
 **/cmake-build-debug
 **/Processed
