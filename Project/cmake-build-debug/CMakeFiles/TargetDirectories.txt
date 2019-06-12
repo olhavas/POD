@@ -1,3 +1,0 @@
-/home/olga/proj/POD/Project/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/home/olga/proj/POD/Project/cmake-build-debug/CMakeFiles/Project.dir
-/home/olga/proj/POD/Project/cmake-build-debug/CMakeFiles/edit_cache.dir
