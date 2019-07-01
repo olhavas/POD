@@ -4,7 +4,7 @@
 #include "Histogram.h"
 
 #include <experimental/filesystem>
-#define PRPATH fs::current_path()//.parent_path()
+#define PRPATH fs::current_path().parent_path()
 #define POS en-1
 namespace fs = std::experimental::filesystem;
 
@@ -27,6 +27,23 @@ enum Options
 
 string option [] = {"changeImg","brightness", "contrast", "negative", "arithmeticMeanFilter",
                     "medianFilter", "hightpassfilter", "histogram", "operatorRobertsaII"};
+
+vector<vector<vector<double>>> matToVec(const Mat & image)
+{
+    vector<vector<vector<double>>> out(image.channels(), vector<vector<double>>(image.rows, vector<double>(image.cols)));
+
+    for(int c = 0; c < image.channels(); c++)
+    {
+        for(int i = 0; i < image.rows; i++)
+        {
+            for(int j =0; j<image.cols; j++)
+            {
+                out[c][i][j]= static_cast<double >(image.at<Vec3b>(i,j)[c]);
+            }
+        }
+    }
+
+}
 
 
 inline double MSE(const Mat & in, const Mat & out)
