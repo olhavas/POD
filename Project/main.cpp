@@ -4,7 +4,7 @@
 #include "Histogram.h"
 
 #include <experimental/filesystem>
-#define PRPATH fs::current_path()//.parent_path()
+#define PRPATH fs::current_path().parent_path()
 #define POS en-1
 namespace fs = std::experimental::filesystem;
 
