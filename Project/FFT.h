@@ -9,22 +9,21 @@
 #include <vector>
 #include <memory>
 #include <cmath>
+#include <complex>
 #include "Complex.h"
 
 class FFT {
 public:
     FFT(cv::Mat & image);
-    cv::Mat & image;
-    cv::Mat * out;
+    //cv::Mat * out;
 
 
 private:
-    std::vector<std::unique_ptr<double>> sin();
-    std::vector<std::unique_ptr<double>> cos();
-    std::vector<std::vector<std::vector<double>>> & out;
+    cv::Mat & image;
 
-
-
+    //std::vector<std::unique_ptr<double>> sin();
+    //std::vector<std::unique_ptr<double>> cos();
+    std::vector<std::vector<std::vector<std::complex<double>>>> out;
 
 
 };
