@@ -14,12 +14,15 @@
 
 class FFT {
 public:
-    FFT(cv::Mat & image);
+    //FFT(cv::Mat & image);
+    FFT(cv::Mat &image);
+
     //cv::Mat * out;
 
 
 private:
-    cv::Mat & image;
+    //cv::Mat & image;
+    std::unique_ptr<cv::Mat> image;
 
     //std::vector<std::unique_ptr<double>> sin();
     //std::vector<std::unique_ptr<double>> cos();
