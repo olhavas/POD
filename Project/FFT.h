@@ -23,7 +23,8 @@ private:
 
     //std::vector<std::unique_ptr<double>> sin();
     //std::vector<std::unique_ptr<double>> cos();
-    std::vector<std::vector<std::vector<std::complex<double>>>> out;
+    std::vector<std::vector<std::vector<Complex>>> out;
+    void copyToComplex();
 
 
 };

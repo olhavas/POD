@@ -7,6 +7,24 @@
 
 FFT::FFT(cv::Mat &image) : image(image)
 {
-    out.resize(image.channels(),std::vector<std::vector<std::complex<double>>>(image.rows, std::vector<std::complex<double>>(image.cols, std::complex<double>{})));
+    out.resize(image.channels(),std::vector<std::vector<Complex>>(image.rows, std::vector<Complex>(image.cols, Complex{})));
+
+}
+
+void FFT::copyToComplex()
+{
+    for(int c = 0; c < image.channels(); c++)
+    {
+        for(int i = 0; i < image.rows; i++)
+        {
+            for(int j =0; j<image.cols; j++)
+            {
+                out[c][i][j] = image.at<cv::Vec3b>(i,j)[c];
+                std::cout<< out[c][i][j]<<" ";
+            }
+            std::cout<<"\n";
+        }
+        std::cout<<"\n";
+    }
 
 }
