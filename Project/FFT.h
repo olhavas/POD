@@ -23,6 +23,7 @@ public:
 private:
     //cv::Mat & image;
     std::shared_ptr<cv::Mat> image;
+    std::shared_ptr<cv::Mat> c_img;
 
     //std::vector<std::unique_ptr<double>> sin();
     //std::vector<std::unique_ptr<double>> cos();
@@ -30,8 +31,7 @@ private:
     void copyToComplex(std::shared_ptr<cv::Mat> image);
     std::vector<std::vector<std::vector<Complex>>> reverseVector(const std::vector<std::vector<std::vector<Complex>>> &input);
     void fastFourier1D(std::vector<std::vector<Complex>> input, const bool & inverse);
-    void fastFourierTransform();
-    void fastFourierInverse();
+    cv::Mat fastFourierTransform();
 
 
 

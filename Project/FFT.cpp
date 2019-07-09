@@ -12,7 +12,8 @@ FFT::FFT(cv::Mat &image) : image(image)
 }*/
 FFT::FFT(const cv::Mat &image, cv::Mat &oimg) : oimg(oimg)
 {
-    this->image =  std::make_shared<cv::Mat>(image);
+    this->image = std::make_shared<cv::Mat>(image);
+    this->c_img = std::make_shared<cv::Mat>()
     out.resize(image.rows,std::vector<std::vector<Complex>>(image.cols, std::vector<Complex>(image.channels(), Complex{})));
 
 
