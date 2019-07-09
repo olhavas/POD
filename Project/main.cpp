@@ -2,6 +2,7 @@
 #include <exception>
 
 #include "Histogram.h"
+#include "FFT.h"
 
 #include <experimental/filesystem>
 #define PRPATH fs::current_path().parent_path()
@@ -27,6 +28,8 @@ enum Options
 
 string option [] = {"changeImg","brightness", "contrast", "negative", "arithmeticMeanFilter",
                     "medianFilter", "hightpassfilter", "histogram", "operatorRobertsaII"};
+
+class FFT;
 
 vector<vector<vector<double>>> matToVec(const Mat & image)
 {
@@ -311,6 +314,11 @@ int main( int argc, char** argv )
     mask->push_back(-1);
     mask->push_back(0);
 
+
+    auto srd_FFT = make_shared<FFT>(image);
+
+
+    /*
     while (endless)
     {
         cout<<"Choose an option: ";
@@ -463,9 +471,9 @@ int main( int argc, char** argv )
                 return 0;
 
         }
-    }
+    } */
 
-
+    delete  mask;
 
 
 
