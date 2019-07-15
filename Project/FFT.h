@@ -15,19 +15,24 @@
 class FFT {
 public:
     //FFT(cv::Mat & image);
-    FFT(cv::Mat &image);
+    FFT(const cv::Mat &image, cv::Mat &oimg);
 
-    //cv::Mat * out;
+    cv::Mat oimg;
 
 
 private:
     //cv::Mat & image;
-    std::unique_ptr<cv::Mat> image;
+    std::shared_ptr<cv::Mat> image;
 
     //std::vector<std::unique_ptr<double>> sin();
     //std::vector<std::unique_ptr<double>> cos();
     std::vector<std::vector<std::vector<Complex>>> out;
-    void copyToComplex();
+    void copyToComplex(std::shared_ptr<cv::Mat> image);
+    std::vector<std::vector<std::vector<Complex>>> reverseVector(const std::vector<std::vector<std::vector<Complex>>> &input);
+    void fastFourier1D(std::vector<std::vector<Complex>> input, const bool & inverse);
+    void fastFourierTransform();
+    void fastFourierInverse();
+
 
 
 };

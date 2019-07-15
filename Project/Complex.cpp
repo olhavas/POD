@@ -98,6 +98,16 @@ double Complex::angle()
     return a;
 }
 
+bool Complex::operator==(Complex v) {
+    return (this->r == v.r && this->i == v.i);
+
+}
+
+bool Complex::operator != (Complex v)
+{
+    return (this->r != v.r || this->i != v.i);
+}
+
 std::ostream& operator<<(std::ostream& output, const Complex& v) {
     output.setf(std::ios::fixed, std::ios::floatfield);
     output.precision(2);

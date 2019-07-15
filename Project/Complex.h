@@ -33,6 +33,8 @@ public:
     Complex* operator += (const Complex v);
     Complex* operator -= (const Complex v);
     void operator /= (Complex v);
+    bool operator == (Complex v);
+    bool operator != (Complex v);
     double mag();
     double squaredSum();
     double angle();
