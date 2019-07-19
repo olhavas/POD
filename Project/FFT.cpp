@@ -116,6 +116,7 @@ cv::Mat FFT::fastFourierTransform()
     out = reverseVector(out);
     for(int i = 0; i < c_img->rows; i++)
         fastFourier1D(out[i], false);
+    out = reverseVector(out);
 
 
 
