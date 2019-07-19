@@ -22,11 +22,14 @@ public:
 
 private:
     //cv::Mat & image;
-    std::shared_ptr<cv::Mat> image;
+    std::shared_ptr<cv::Mat> or_image;
     std::shared_ptr<cv::Mat> c_img;
 
     //std::vector<std::unique_ptr<double>> sin();
     //std::vector<std::unique_ptr<double>> cos();
+
+
+    //[row][col][channel]
     std::vector<std::vector<std::vector<Complex>>> out;
     void copyToComplex(std::shared_ptr<cv::Mat> image);
     std::vector<std::vector<std::vector<Complex>>> reverseVector(const std::vector<std::vector<std::vector<Complex>>> &input);
