@@ -315,7 +315,16 @@ int main( int argc, char** argv )
     mask->push_back(0);
 
 
-    auto srd_FFT = make_shared<FFT>(image);
+    auto srd_FFT = make_shared<FFT>(image, out);
+
+    namedWindow( wind_name, WINDOW_NORMAL);// Create a window for display.
+    imshow( wind_name, image );
+    cout<<"Set brightness: ";
+
+    namedWindow( static_cast<string>(wind_name+"fft"), WINDOW_NORMAL);// Create a window for display.
+    imshow( static_cast<string>(wind_name+"fft"), srd_FFT->fastFourierTransform() );
+    waitKey(0);             // Wait for a keystroke in the window
+
 
 
     /*

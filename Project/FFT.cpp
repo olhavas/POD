@@ -4,6 +4,13 @@
 
 #include "FFT.h"
 
+inline void swap(Complex *v1, Complex *v2)
+{
+    Complex temp = *v1;
+    *v1 = *v2;
+    *v2 = temp;
+}
+
 /*
 FFT::FFT(cv::Mat &image) : image(image)
 {
@@ -14,6 +21,9 @@ FFT::FFT(const cv::Mat &image, cv::Mat &oimg) : oimg(oimg)
 {
     this->or_image = std::make_shared<cv::Mat>(image);
     this->c_img = std::make_shared<cv::Mat>(image);
+    this->cols = image.cols;
+    this->rows = image.rows;
+    this->channels = image.channels();
     out.resize(image.rows,std::vector<std::vector<Complex>>(image.cols, std::vector<Complex>(image.channels(), Complex{})));
 
 
@@ -117,8 +127,21 @@ cv::Mat FFT::fastFourierTransform()
     for(int i = 0; i < c_img->rows; i++)
         fastFourier1D(out[i], false);
     out = reverseVector(out);
-
-
+    return resultToImg(out);
 
 }
+cv::Mat FFT::resultToImg(const std::vector<std::vector<std::vector<Complex>>> &input) {
 
+    for(uint c = 0; c < this->channels; c++)
+    {
+        for(uint i = 0; i < this->rows; i++)
+        {
+            for(uint j = 0; j < this->cols; j++)
+            {
+                 c_img->at<cv::Vec3b>(i,j)[c] = input[i][j][c].mag();
+            }
+        }
+
+    }
+    return *c_img;
+}
