@@ -13,7 +13,7 @@ FFT::FFT(cv::Mat &image) : image(image)
 FFT::FFT(const cv::Mat &image, cv::Mat &oimg) : oimg(oimg)
 {
     this->or_image = std::make_shared<cv::Mat>(image);
-    this->c_img = std::make_shared<cv::Mat>(image)
+    this->c_img = std::make_shared<cv::Mat>(image);
     out.resize(image.rows,std::vector<std::vector<Complex>>(image.cols, std::vector<Complex>(image.channels(), Complex{})));
 
 
@@ -54,7 +54,38 @@ void FFT::fastFourier1D(std::vector<std::vector<Complex>> input,const bool & inv
 
     for(uint i = 0; i < input.size(); i += 2)
     {
+        std::vector<Complex> tempeven;
+        std::vector<Complex> tempodd;
+        for(uint ch = 0; ch < channels; ch++)
+        {
+            tempeven.push_back(input[i][ch]);
+            tempodd.push_back(input[i+1][ch]);
+        }
+        even.push_back(tempeven);
+        odd.push_back(tempodd);
+    }
 
+    fastFourier1D(even,inverse);
+    fastFourier1D(odd,inverse);
+
+    for(uint ch = 0; ch < channels; ch++)
+    {
+        for(uint i = 0; i < input.size()/2; i++)
+        {
+            if(inverse == false)
+                angle = -2.0 * M_PI * static_cast<double>(i)/static_cast<double>(input.size());
+            else
+                angle = 2.0 * M_PI * static_cast<double>(i)/static_cast<double>(input.size());
+            double real = cos(angle);
+            double imaginary = sin(angle);
+            Complex W{real, imaginary};
+
+            W = W * odd[i][ch];
+
+            input[i][ch] = even[i][ch] + W;
+            input[(input.size() / 2) + i][ch] = even[i][ch] - W;
+
+        }
     }
 
 }
@@ -79,11 +110,11 @@ FFT::reverseVector(const std::vector<std::vector<std::vector<Complex>>> &input)
 cv::Mat FFT::fastFourierTransform()
 {
     copyToComplex(c_img);
-    cv::Mat oimg(or_image);
-    for(int i = 0; i < image->rows; i++)
+    c_img->copyTo(oimg);
+    for(int i = 0; i < c_img->rows; i++)
         fastFourier1D(out[i], false);
     out = reverseVector(out);
-    for(int i = 0; i < image->rows; i++)
+    for(int i = 0; i < c_img->rows; i++)
         fastFourier1D(out[i], false);
 
 
