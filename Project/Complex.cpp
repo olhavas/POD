@@ -14,6 +14,15 @@ Complex::Complex(const Complex &v) : r(v.r), i(v.i)
 {
 
 }
+
+void Complex::setR(double r) {
+    Complex::r = r;
+}
+
+void Complex::setI(double i) {
+    Complex::i = i;
+}
+
 Complex::Complex(const double &r, const double &i=0)
 {
     this->r = r;

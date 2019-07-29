@@ -94,7 +94,9 @@ void FFT::fastFourier1D(std::vector<std::vector<Complex>> input,const bool & inv
                 angle = 2.0 * M_PI * static_cast<double>(i)/static_cast<double>(size);
             double real = cos(angle);
             double imaginary = sin(angle);
-            Complex W(real, imaginary);
+            Complex W;
+            W.setR(real);
+            W.setI(imaginary);
 
             W = W * odd[i][ch];
 

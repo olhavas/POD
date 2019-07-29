@@ -39,6 +39,10 @@ public:
     double squaredSum();
     double angle();
 
+    void setR(double r);
+
+    void setI(double i);
+
 };
 
 std::ostream& operator<<(std::ostream& output, const Complex& v);
