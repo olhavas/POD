@@ -79,8 +79,7 @@ void Complex::operator*=(double v)
     i *= v;
 }
 
-double Complex::mag()
-{
+double Complex::mag() const {
     return sqrt(r*r + i*i);
 }
 

@@ -4,6 +4,8 @@
 
 #include "FFT.h"
 
+extern short truncate(short val);
+
 inline void swap(Complex *v1, Complex *v2)
 {
     Complex temp = *v1;
@@ -52,6 +54,7 @@ void FFT::copyToComplex(std::shared_ptr<cv::Mat> image)
 
 void FFT::fastFourier1D(std::vector<std::vector<Complex>> input,const bool & inverse)
 {
+    int size = input.size();
     double angle = 0.0;
 
     if(input.size() <= 1)
@@ -60,9 +63,11 @@ void FFT::fastFourier1D(std::vector<std::vector<Complex>> input,const bool & inv
     std::vector<std::vector<Complex>> even;
     std::vector<std::vector<Complex>> odd;
 
+    std::cout<<input.size()<< "  "<<input[0].size()<<"\n";
+
     uint channels = input[0].size();
 
-    for(uint i = 0; i < input.size(); i += 2)
+    for(uint i = 0; i < size; i += 2)
     {
         std::vector<Complex> tempeven;
         std::vector<Complex> tempodd;
@@ -77,26 +82,30 @@ void FFT::fastFourier1D(std::vector<std::vector<Complex>> input,const bool & inv
 
     fastFourier1D(even,inverse);
     fastFourier1D(odd,inverse);
+    std::cout<<"git1\n";
 
     for(uint ch = 0; ch < channels; ch++)
     {
-        for(uint i = 0; i < input.size()/2; i++)
+        for(uint i = 0; i <size/2; i++)
         {
             if(inverse == false)
-                angle = -2.0 * M_PI * static_cast<double>(i)/static_cast<double>(input.size());
+                angle = -2.0 * M_PI * static_cast<double>(i)/static_cast<double>(size);
             else
-                angle = 2.0 * M_PI * static_cast<double>(i)/static_cast<double>(input.size());
+                angle = 2.0 * M_PI * static_cast<double>(i)/static_cast<double>(size);
             double real = cos(angle);
             double imaginary = sin(angle);
-            Complex W{real, imaginary};
+            Complex W(real, imaginary);
 
             W = W * odd[i][ch];
 
             input[i][ch] = even[i][ch] + W;
-            input[(input.size() / 2) + i][ch] = even[i][ch] - W;
+            input[(size / 2) + i][ch] = even[i][ch] - W;
+            std::cout<<"git"<<(size / 2) + i << "  "<< size<<"\n";
 
         }
+        std::cout<<"git\n";
     }
+
 
 }
 
@@ -104,16 +113,17 @@ std::vector<std::vector<std::vector<Complex>>>
 FFT::reverseVector(const std::vector<std::vector<std::vector<Complex>>> &input)
 {
     std::vector<std::vector<std::vector<Complex>>> temp(input);
-    for(int i = 0; i < c_img->rows; i++)
+    for(int i = 0; i < this->rows; i++)
     {
-        for(int j =0; j<c_img->cols; j++)
+        for(int j =0; j< this->cols; j++)
         {
-            for(int c = 0; c < c_img->channels(); c++)
+            for(int c = 0; c < this->channels; c++)
             {
                 temp[i][j][c] = input[j][i][c];
             }
         }
     }
+    std::cout<<"git";
     return temp;
 }
 
@@ -127,10 +137,11 @@ cv::Mat FFT::fastFourierTransform()
     for(int i = 0; i < c_img->rows; i++)
         fastFourier1D(out[i], false);
     out = reverseVector(out);
-    return resultToImg(out);
+    resultToImg(out);
+    return oimg;
 
 }
-cv::Mat FFT::resultToImg(const std::vector<std::vector<std::vector<Complex>>> &input) {
+void FFT::resultToImg(const std::vector<std::vector<std::vector<Complex>>> &input) {
 
     for(uint c = 0; c < this->channels; c++)
     {
@@ -138,10 +149,10 @@ cv::Mat FFT::resultToImg(const std::vector<std::vector<std::vector<Complex>>> &i
         {
             for(uint j = 0; j < this->cols; j++)
             {
-                 c_img->at<cv::Vec3b>(i,j)[c] = input[i][j][c].mag();
+                 c_img->at<cv::Vec3b>(i,j)[c] = truncate(input[i][j][c].mag());
+                 oimg.at<cv::Vec3b>(i,j)[c] = truncate(input[i][j][c].mag());
             }
         }
 
     }
-    return *c_img;
 }

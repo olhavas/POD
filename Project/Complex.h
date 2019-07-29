@@ -35,7 +35,7 @@ public:
     void operator /= (Complex v);
     bool operator == (Complex v);
     bool operator != (Complex v);
-    double mag();
+    double mag() const;
     double squaredSum();
     double angle();
 

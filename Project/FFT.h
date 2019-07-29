@@ -41,7 +41,7 @@ private:
     std::vector<std::vector<std::vector<Complex>>> reverseVector(const std::vector<std::vector<std::vector<Complex>>> &input);
     void fastFourier1D(std::vector<std::vector<Complex>> input, const bool & inverse);
 
-    cv::Mat resultToImg(const std::vector<std::vector<std::vector<Complex>>> &input);
+    void resultToImg(const std::vector<std::vector<std::vector<Complex>>> &input);
 
 
 
