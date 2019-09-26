@@ -6,6 +6,27 @@
 
 extern short truncate(short val);
 
+
+inline uint numOfbits(uint n)
+{
+  int k = 0;
+  for( ; n > 0; n >>= 1) k++;
+  return k;
+}
+
+
+uint FFT::reverseBits(uint num)
+{
+    unsigned int reverse_num = 0, i, temp;
+    for (i = 0; i < NO_OF_BITS; i++)
+    {
+        temp = (num & (1 << i));
+        if(temp)
+            reverse_num |= (1 << ((NO_OF_BITS - 1) - i));
+    }
+
+    return reverse_num;
+}
 inline void swap(Complex *v1, Complex *v2)
 {
     Complex temp = *v1;
@@ -60,53 +81,55 @@ void FFT::fastFourier1D(std::vector<std::vector<Complex>> input,const bool & inv
     if(input.size() <= 1)
         return;
 
-    std::vector<std::vector<Complex>> even;
-    std::vector<std::vector<Complex>> odd;
+//    std::vector<std::vector<Complex>> even;
+//    std::vector<std::vector<Complex>> odd;
 
     std::cout<<input.size()<< "  "<<input[0].size()<<"\n";
 
     uint channels = input[0].size();
 
-    for(uint i = 0; i < size; i += 2)
-    {
-        std::vector<Complex> tempeven;
-        std::vector<Complex> tempodd;
-        for(uint ch = 0; ch < channels; ch++)
-        {
-            tempeven.push_back(input[i][ch]);
-            tempodd.push_back(input[i+1][ch]);
-        }
-        even.push_back(tempeven);
-        odd.push_back(tempodd);
-    }
 
-    fastFourier1D(even,inverse);
-    fastFourier1D(odd,inverse);
-    std::cout<<"git1\n";
 
-    for(uint ch = 0; ch < channels; ch++)
-    {
-        for(uint i = 0; i <size/2; i++)
-        {
-            if(inverse == false)
-                angle = -2.0 * M_PI * static_cast<double>(i)/static_cast<double>(size);
-            else
-                angle = 2.0 * M_PI * static_cast<double>(i)/static_cast<double>(size);
-            double real = cos(angle);
-            double imaginary = sin(angle);
-            Complex W;
-            W.setR(real);
-            W.setI(imaginary);
-
-            W = W * odd[i][ch];
-
-            input[i][ch] = even[i][ch] + W;
-            input[(size / 2) + i][ch] = even[i][ch] - W;
-            std::cout<<"git"<<(size / 2) + i << "  "<< size<<"\n";
-
-        }
-        std::cout<<"git\n";
-    }
+//    for(uint i = 0; i < size; i += 2)
+//    {
+//        std::vector<Complex> tempeven;
+//        std::vector<Complex> tempodd;
+//        for(uint ch = 0; ch < channels; ch++)
+//        {
+//            tempeven.push_back(input[i][ch]);
+//            tempodd.push_back(input[i+1][ch]);
+//        }
+//        even.push_back(tempeven);
+//        odd.push_back(tempodd);
+//    }
+//
+//    fastFourier1D(even,inverse);
+//    fastFourier1D(odd,inverse);
+//    std::cout<<"git1\n";
+//
+//    for(uint ch = 0; ch < channels; ch++)
+//    {
+//        for(uint i = 0; i <size/2; i++)
+//        {
+//            if(inverse == false)
+//                angle = -2.0 * M_PI * static_cast<double>(i)/static_cast<double>(size);
+//            else
+//                angle = 2.0 * M_PI * static_cast<double>(i)/static_cast<double>(size);
+//            double real = cos(angle);
+//            double imaginary = sin(angle);
+//            Complex W;
+//            W.setR(real);
+//            W.setI(imaginary);
+//
+//            W = W * odd[i][ch];
+//
+//            input[i][ch] = even[i][ch] + W;
+//            input[(size / 2) + i][ch] = even[i][ch] - W;
+//            std::cout<<"git"<<(size / 2) + i << "  "<< size<<"\n";
+//
+//        }
+//        std::cout<<"git\n";
+//    }
 
 
 }
@@ -133,9 +156,11 @@ cv::Mat FFT::fastFourierTransform()
 {
     copyToComplex(c_img);
     c_img->copyTo(oimg);
+    NO_OF_BITS = numOfbits(this->cols-1);
     for(int i = 0; i < c_img->rows; i++)
         fastFourier1D(out[i], false);
     out = reverseVector(out);
+    NO_OF_BITS = numOfbits(this->rows-1);
     for(int i = 0; i < c_img->rows; i++)
         fastFourier1D(out[i], false);
     out = reverseVector(out);

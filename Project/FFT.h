@@ -12,6 +12,8 @@
 #include <complex>
 #include "Complex.h"
 
+
+
 inline void swap(Complex *v1, Complex *v2);
 
 class FFT {
@@ -30,6 +32,7 @@ private:
     uint cols;
     uint rows;
     uint channels;
+    uint NO_OF_BITS;
 
     //std::vector<std::unique_ptr<double>> sin();
     //std::vector<std::unique_ptr<double>> cos();
@@ -40,6 +43,7 @@ private:
     void copyToComplex(std::shared_ptr<cv::Mat> image);
     std::vector<std::vector<std::vector<Complex>>> reverseVector(const std::vector<std::vector<std::vector<Complex>>> &input);
     void fastFourier1D(std::vector<std::vector<Complex>> input, const bool & inverse);
+    uint reverseBits(uint num);
 
     void resultToImg(const std::vector<std::vector<std::vector<Complex>>> &input);
 
